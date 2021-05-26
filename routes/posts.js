@@ -9,17 +9,17 @@ router.get("/posts", (req, res) => {
     .sort("-createdAt") //Return latest posts
     .limit(100) //Return only 100 posts
     .then((posts) => {
-      const map = posts.map((item) => ({
-        id: item._id,
-        title: item.title,
-        subtitle: item.subtitle,
-        body: item.body,
-      }));
+      // const map = posts.map((item) => ({
+      //   id: item._id,
+      //   title: item.title,
+      //   subtitle: item.subtitle,
+      //   body: item.body,
+      // }));
       res.status(200).send(posts);
     })
     .catch((err) => {
       res.status(404).send({ message: "Could not connect" });
-      // console.log(err);
+      console.log(err);
     });
 });
 
@@ -31,12 +31,7 @@ router.get("/posts/:id", (req, res) => {
       if (!item) {
         return res.status(404).send({ message: "404: Post not found" });
       }
-      res.send({
-        id: item._id,
-        title: item.title,
-        subtitle: item.subtitle,
-        body: item.body,
-      });
+      res.send(item);
       return;
     })
     .catch((err) => {
@@ -90,6 +85,25 @@ router.patch("/posts/:id", (req, res) => {
       }
       if (!id || (!subtitle && !body)) {
         res.status(422).json({ error: "Please enter required fields" });
+        return;
+      }
+      res.status(200).send({ message: "200: Post updated" });
+      return;
+    })
+    .catch((error) => {
+      res.status(500).send(error);
+    });
+});
+
+router.patch("/posts/:id/comment", (req, res) => {
+  const { id } = req.params;
+  const { comment } = req.body;
+
+  mongoose.set("useFindAndModify", false);
+  Post.findByIdAndUpdate(id, { $push: { comments: comment } }, { new: true })
+    .then((item) => {
+      if (!item) {
+        res.status(404).send({ message: "404: Post not found" });
         return;
       }
       res.status(200).send({ message: "200: Post updated" });

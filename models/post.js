@@ -18,6 +18,10 @@ const postSchema = new mongoose.Schema(
       type: String,
       require: true,
     },
+    comments: {
+      type: [String],
+      default: [],
+    },
     createdAt: {
       type: Date,
       default: Date.now,
