@@ -5,7 +5,8 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 
 const PORT = 8081;
-const url = "mongodb://127.0.0.1:27017/posts";
+// const url = "mongodb://127.0.0.1:27017/posts";
+const url = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.15lhy.mongodb.net/posts`;
 
 mongoose.connect(url, {
   useNewUrlParser: true,
