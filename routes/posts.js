@@ -15,7 +15,7 @@ router.get("/posts", (req, res) => {
         totalResults: posts.length,
         posts: posts,
       };
-      console.log(result);
+      // console.log(result);
       res.status(200).send(result);
     })
     .catch((err) => {
