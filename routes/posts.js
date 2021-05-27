@@ -9,13 +9,14 @@ router.get("/posts", (req, res) => {
     .sort("-createdAt") //Return latest posts
     .limit(100) //Return only 100 posts
     .then((posts) => {
-      // const map = posts.map((item) => ({
-      //   id: item._id,
-      //   title: item.title,
-      //   subtitle: item.subtitle,
-      //   body: item.body,
-      // }));
-      res.status(200).send(posts);
+      console.log(posts.length);
+      const result = {
+        status: "ok",
+        totalResults: posts.length,
+        posts: posts,
+      };
+      console.log(result);
+      res.status(200).send(result);
     })
     .catch((err) => {
       res.status(404).send({ message: "Could not connect" });
